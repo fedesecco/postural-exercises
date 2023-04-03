@@ -1,30 +1,37 @@
-"use strict";
-exports.__esModule = true;
-var grammy_1 = require("grammy");
-var express_1 = require("express");
-var bot = new grammy_1.Bot(process.env.TELEGRAM_TOKEN || "");
-var introductionMessage = "Hello! I'm a Telegram bot.\nI'm powered by Cyclic, the next-generation serverless computing platform.\n\n<b>Commands</b>\n/yo - Be greeted by me\n/effect [text] - Show a keyboard to apply text effects to [text]";
-var replyWithIntro = function (ctx) {
-    return ctx.reply(introductionMessage, {
-        parse_mode: "HTML"
-    });
-};
+import { Bot, webhookCallback } from "grammy";
+import express from "express";
+const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
+
+const introductionMessage = `Hello! I'm a Telegram bot.
+I'm powered by Cyclic, the next-generation serverless computing platform.
+
+<b>Commands</b>
+/yo - Be greeted by me
+/effect [text] - Show a keyboard to apply text effects to [text]`;
+
+const replyWithIntro = (ctx) =>
+  ctx.reply(introductionMessage, {
+    parse_mode: "HTML",
+  });
+
 bot.on("message", replyWithIntro);
+
 //deploy
 if (process.env.NODE_ENV === "production") {
-    // Use Webhooks for the production server
-    var app = (0, express_1["default"])();
-    app.use(express_1["default"].json());
-    app.use((0, grammy_1.webhookCallback)(bot, "express"));
-    var PORT_1 = process.env.PORT || 3000;
-    app.listen(PORT_1, function () {
-        console.log("Bot listening on port ".concat(PORT_1));
-    });
+  // Use Webhooks for the production server
+  const app = express();
+  app.use(express.json());
+  app.use(webhookCallback(bot, "express"));
+
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Bot listening on port ${PORT}`);
+  });
+} else {
+  // Use Long Polling for development
+  bot.start();
 }
-else {
-    // Use Long Polling for development
-    bot.start();
-}
+
 /* const Telegraf = require("telegraf");
 const bot = new Telegraf("TOKEN FORNITO DA BOTFATHER");
 bot.start((context) => {
@@ -51,6 +58,7 @@ if (process.env.NODE_ENV === "production") {
   // Use Long Polling for development
   bot.start();
 } */
+
 /* const TelegramBot = require("node-telegram-bot-api");
 
 const API_TOKEN = process.env.TELEGRAF_API_TOKEN;
