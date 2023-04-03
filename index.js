@@ -1,6 +1,18 @@
-const TelegramBot = require("node-telegram-bot-api");
+const Telegraf = require("telegraf");
+const bot = new Telegraf("TOKEN FORNITO DA BOTFATHER");
+bot.start((context) => {
+  console.log("Servizio avviato...");
+  context.reply("Servizio ECHO avviato");
+});
+bot.on("text", (context) => {
+  text = context.update.message.text;
+  context.reply("Hai scritto: " + text);
+});
+bot.launch();
 
-const API_TOKEN = process.env.TG_API_TOKEN;
+/* const TelegramBot = require("node-telegram-bot-api");
+
+const API_TOKEN = process.env.TELEGRAF_API_TOKEN;
 
 const exercises = [
   { name: "Esercizio 1", sets: 3, reps: 10, rest: 60 },
@@ -71,4 +83,4 @@ function sendDailyExercises(chatId) {
   });
 
   bot.sendMessage(chatId, message);
-}
+} */
