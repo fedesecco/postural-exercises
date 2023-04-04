@@ -9,6 +9,12 @@ const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
 const introductionMessage = `Ciao! Sono un bot che selezionerà per te degli esercizi specifici da fare ogni giorno! Gli esercizi sono a cura del dott. Alessandro Mantoan, laureato in bla bla bla. Il messaggio arriverà ogni giorno alle 9!`;
 const helpMessage = `Nessun aiuto a ancora disponibile.`
 
+//scheduled message
+const message9Am = `Buongiorno, sono le 9! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
+
+//groupID mio ale e bot
+const testGroupID = -956704196
+
 //commands
 bot.command("PEstart", (ctx) => {
   ctx.reply(introductionMessage, {
@@ -17,16 +23,10 @@ bot.command("PEstart", (ctx) => {
 });
 
 bot.command("PEhelp", (ctx) => {
-  ctx.reply(introductionMessage, {
+  ctx.reply(helpMessage, {
     parse_mode: "HTML",
   });
 });
-
-//scheduled message
-const message9Am = `Buongiorno, sono le 9! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
-
-//groupID mio ale e bot
-const testGroupID = -956704196
 
 //scheduler
 const scheduledFunction = schedule.scheduleJob("0 9 * * *", function() {
