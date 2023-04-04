@@ -10,13 +10,13 @@ const introductionMessage = `Ciao! Sono un bot che selezionerà per te degli ese
 const helpMessage = `Nessun aiuto a ancora disponibile.`
 
 //commands
-bot.command("start", (ctx) => {
+bot.command("PEstart", (ctx) => {
   ctx.reply(introductionMessage, {
     parse_mode: "HTML",
   });
 });
 
-bot.command("help", (ctx) => {
+bot.command("PEhelp", (ctx) => {
   ctx.reply(introductionMessage, {
     parse_mode: "HTML",
   });
