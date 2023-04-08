@@ -21,7 +21,7 @@ const chatIDs = {
 function getTime() {
   let result = "";
   let date = new Date();
-  result = result.concat((Number(date.getHours()) + 2).toString);
+  result = result.concat(toString(Number(date.getHours()) + 2));
   result = result.concat(":");
   result = result.concat(date.getMinutes());
   return result;
