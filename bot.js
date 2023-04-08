@@ -29,37 +29,38 @@ function getTime() {
   return result;
 }
 
+// scheduled message
+setInterval(function () {
+  console.log("starting time check");
+  const time = getTime();
+  console.log(`time = ${time}`);
+  if (time == "20:15") {
+    console.log("send scheduled message triggered");
+    Object.values(chatIDs).forEach((chatID) => {
+      bot.api.sendMessage(chatID, scheduledMessage1);
+    });
+  }
+}, 60 * 1000);
+
 // PEstart
 bot.command("PEstart", (ctx) => {
+  console.log("/PEstart triggered");
   ctx.reply(introductionMessage, {
     parse_mode: "HTML",
   });
 });
 // PEhelp
 bot.command("PEhelp", (ctx) => {
+  console.log("/PEhelp triggered");
   ctx.reply(helpMessage, {
     parse_mode: "HTML",
   });
 });
 // test
 bot.command("test", (ctx) => {
+  console.log("/test triggered");
   ctx.reply(testMessage, {
     parse_mode: "HTML",
-  });
-});
-
-//scheduler
-const scheduler1 = schedule.scheduleJob("0 9 * * *", function () {
-  console.log("scheduler1 triggered");
-  Object.values(chatIDs).forEach((chatID) => {
-    bot.api.sendMessage(chatID, scheduledMessage1);
-  });
-});
-
-const scheduler2 = schedule.scheduleJob("15 19  * * *", function () {
-  console.log("scheduler2 triggered");
-  Object.values(chatIDs).forEach((chatID) => {
-    bot.api.sendMessage(chatID, scheduledMessage1);
   });
 });
 
