@@ -21,7 +21,7 @@ const chatIDs = {
 function getTime() {
   let result = "";
   let date = new Date();
-  result = result.concat(date.getHours());
+  result = result.concat((Number(date.getHours()) + 2).toString);
   result = result.concat(":");
   result = result.concat(date.getMinutes());
   return result;
@@ -54,7 +54,7 @@ const scheduler1 = schedule.scheduleJob("0 9 * * *", function () {
   });
 });
 
-const scheduler2 = schedule.scheduleJob("0 19  * * *", function () {
+const scheduler2 = schedule.scheduleJob("05 17  * * *", function () {
   console.log("scheduler2 triggered");
   Object.values(chatIDs).forEach((chatID) => {
     bot.api.sendMessage(chatID, scheduledMessage1);
