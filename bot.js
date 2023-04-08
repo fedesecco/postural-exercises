@@ -1,4 +1,4 @@
-const { Bot } = require("grammy");
+const { Bot, webhookCallback } = require("grammy");
 const express = require("express");
 const schedule = require("node-schedule");
 require("dotenv").config();
