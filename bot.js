@@ -22,6 +22,9 @@ function getTime() {
   let date = new Date();
   let hours = (date.getUTCHours() + 2).toString();
   let minutes = date.getUTCMinutes().toString();
+  if (minutes.length === 1) {
+    minutes += "0";
+  }
   let result = hours + ":" + minutes;
   return result;
 }
@@ -53,7 +56,7 @@ const scheduler1 = schedule.scheduleJob("0 9 * * *", function () {
   });
 });
 
-const scheduler2 = schedule.scheduleJob("05 17  * * *", function () {
+const scheduler2 = schedule.scheduleJob("15 17  * * *", function () {
   console.log("scheduler2 triggered");
   Object.values(chatIDs).forEach((chatID) => {
     bot.api.sendMessage(chatID, scheduledMessage1);
