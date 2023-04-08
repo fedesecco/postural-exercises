@@ -8,6 +8,7 @@ const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
 //wiki messages
 const introductionMessage = `Ciao! Sono un bot che selezionerà per te degli esercizi specifici da fare ogni giorno! Gli esercizi sono a cura del dott. Alessandro Mantoan, laureato in bla bla bla. Il messaggio arriverà ogni giorno alle 9!`;
 const helpMessage = `Nessun aiuto a ancora disponibile.`;
+const testMessage = `Sono le ${getTime()}.`;
 
 //scheduled message
 const scheduledMessage1 = `Buongiorno, sono le ${getTime()}! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
@@ -26,27 +27,35 @@ function getTime() {
   return result;
 }
 
-//commands
+// PEstart
 bot.command("PEstart", (ctx) => {
   ctx.reply(introductionMessage, {
     parse_mode: "HTML",
   });
 });
-
+// PEhelp
 bot.command("PEhelp", (ctx) => {
   ctx.reply(helpMessage, {
+    parse_mode: "HTML",
+  });
+});
+// test
+bot.command("test", (ctx) => {
+  ctx.reply(testMessage, {
     parse_mode: "HTML",
   });
 });
 
 //scheduler
 const scheduler1 = schedule.scheduleJob("0 9 * * *", function () {
+  console.log("scheduler1 triggered");
   Object.values(chatIDs).forEach((chatID) => {
     bot.api.sendMessage(chatID, scheduledMessage1);
   });
 });
 
-const scheduler2 = schedule.scheduleJob("50 18  * * *", function () {
+const scheduler2 = schedule.scheduleJob("0 19  * * *", function () {
+  console.log("scheduler2 triggered");
   Object.values(chatIDs).forEach((chatID) => {
     bot.api.sendMessage(chatID, scheduledMessage1);
   });
