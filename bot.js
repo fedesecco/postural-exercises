@@ -11,7 +11,7 @@ const helpMessage = `Nessun aiuto a ancora disponibile.`;
 
 //scheduled message
 const message1 = `Buongiorno, sono le 9! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
-const message2 = `Buongiorno, sono le 18:10! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
+const message2 = `Buongiorno, sono le 18:15! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
 
 //groupID mio ale e bot
 const testGroupID = -100956704196;
