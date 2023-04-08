@@ -13,9 +13,10 @@ const helpMessage = `Nessun aiuto a ancora disponibile.`;
 const message1 = `Buongiorno, sono le 9! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
 const message2 = `Buongiorno, sono le 18:15! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
 
-//groupID mio ale e bot
-const testGroupID = -100956704196;
-const testChannelID = -1001859807156;
+const chatIDs = {
+  testGroup1: -100956704196,
+  testChannel1: -1001859807156,
+};
 
 //commands
 bot.command("PEstart", (ctx) => {
@@ -31,18 +32,16 @@ bot.command("PEhelp", (ctx) => {
 });
 
 //scheduler
-const groupMessage1 = schedule.scheduleJob("0 9 * * *", function () {
-  bot.api.sendMessage(testGroupID, message1);
-});
-const channelMessage1 = schedule.scheduleJob("0 9 * * *", function () {
-  bot.api.sendMessage(testChannelID, message1);
+const scheduledMessage1 = schedule.scheduleJob("0 9 * * *", function () {
+  Object.values(chatIDs).forEach((chatID) => {
+    bot.api.sendMessage(chatID, message1);
+  });
 });
 
-const groupMessage2 = schedule.scheduleJob("15 18 * * *", function () {
-  bot.api.sendMessage(testGroupID, message2);
-});
-const channelMessage2 = schedule.scheduleJob("15 18 * * *", function () {
-  bot.api.sendMessage(testChannelID, message2);
+const scheduledMessage2 = schedule.scheduleJob("30 18  * * *", function () {
+  Object.values(chatIDs).forEach((chatID) => {
+    bot.api.sendMessage(chatID, message2);
+  });
 });
 
 //deploy
