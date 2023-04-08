@@ -19,11 +19,10 @@ const chatIDs = {
 };
 
 function getTime() {
-  let result = "";
   let date = new Date();
-  result = result.concat(toString(Number(date.getHours()) + 2));
-  result = result.concat(":");
-  result = result.concat(date.getMinutes());
+  let hours = (date.getUTCHours() + 2).toString();
+  let minutes = date.getUTCMinutes().toString();
+  let result = hours + ":" + minutes;
   return result;
 }
 
