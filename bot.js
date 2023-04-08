@@ -1,6 +1,4 @@
-import { Bot, webhookCallback } from "grammy";
-import express from "express";
-import schedule from "node-schedule";
+const { Bot } = require("grammy");
 
 const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
 
@@ -10,7 +8,7 @@ const helpMessage = `Nessun aiuto a ancora disponibile.`;
 
 //scheduled message
 const message9Am = `Buongiorno, sono le 9! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
-const message13Am = `Buongiorno, sono le 13! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
+const message18Pm = `Buongiorno, sono le 18:00! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
 
 //groupID mio ale e bot
 const testGroupID = -100956704196;
@@ -37,12 +35,11 @@ const channel9AmMessage = schedule.scheduleJob("0 9 * * *", function () {
   bot.api.sendMessage(testChannelID, message9Am);
 });
 
-//scheduler
-const group13AmMessage = schedule.scheduleJob("1 3 * * *", function () {
-  bot.api.sendMessage(testGroupID, message13Am);
+const group13AmMessage = schedule.scheduleJob("1 8 * * *", function () {
+  bot.api.sendMessage(testGroupID, message18Pm);
 });
-const channel13AmMessage = schedule.scheduleJob("1 3 * * *", function () {
-  bot.api.sendMessage(testChannelID, message13Am);
+const channel13AmMessage = schedule.scheduleJob("1 8 * * *", function () {
+  bot.api.sendMessage(testChannelID, message18Pm);
 });
 
 //deploy
