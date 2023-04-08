@@ -30,17 +30,16 @@ function getTime() {
 }
 
 // scheduled message
-setInterval(function () {
-  console.log("starting time check");
+function sendMessageAtSpecificTime(targetTime) {
   const time = getTime();
-  console.log(`time = ${time}`);
-  if (time == "20:15") {
+  console.log(`Time check: time = ${time}, target = ${targetTime}`);
+  if (time == targetTime) {
     console.log("send scheduled message triggered");
     Object.values(chatIDs).forEach((chatID) => {
       bot.api.sendMessage(chatID, scheduledMessage1);
     });
   }
-}, 60 * 1000);
+}
 
 // PEstart
 bot.command("PEstart", (ctx) => {
@@ -74,6 +73,7 @@ if (process.env.NODE_ENV === "production") {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`Bot listening on port ${PORT}`);
+    setInterval(sendMessageAtSpecificTime("20:30"), 60 * 1000);
   });
 } else {
   // Use Long Polling for development
