@@ -10,8 +10,8 @@ const introductionMessage = `Ciao! Sono un bot che selezionerà per te degli ese
 const helpMessage = `Nessun aiuto a ancora disponibile.`;
 
 //scheduled message
-const message9Am = `Buongiorno, sono le 9! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
-const message18Pm = `Buongiorno, sono le 18:00! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
+const message1 = `Buongiorno, sono le 9! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
+const message2 = `Buongiorno, sono le 18:10! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
 
 //groupID mio ale e bot
 const testGroupID = -100956704196;
@@ -31,18 +31,18 @@ bot.command("PEhelp", (ctx) => {
 });
 
 //scheduler
-const group9AmMessage = schedule.scheduleJob("0 9 * * *", function () {
-  bot.api.sendMessage(testGroupID, message9Am);
+const groupMessage1 = schedule.scheduleJob("0 9 * * *", function () {
+  bot.api.sendMessage(testGroupID, message1);
 });
-const channel9AmMessage = schedule.scheduleJob("0 9 * * *", function () {
-  bot.api.sendMessage(testChannelID, message9Am);
+const channelMessage1 = schedule.scheduleJob("0 9 * * *", function () {
+  bot.api.sendMessage(testChannelID, message1);
 });
 
-const group13AmMessage = schedule.scheduleJob("1 8 * * *", function () {
-  bot.api.sendMessage(testGroupID, message18Pm);
+const groupMessage2 = schedule.scheduleJob("1 0 1 8 * * *", function () {
+  bot.api.sendMessage(testGroupID, message2);
 });
-const channel13AmMessage = schedule.scheduleJob("1 8 * * *", function () {
-  bot.api.sendMessage(testChannelID, message18Pm);
+const channelMessage2 = schedule.scheduleJob("1 0 1 8 * * *", function () {
+  bot.api.sendMessage(testChannelID, message2);
 });
 
 //deploy
