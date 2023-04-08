@@ -1,4 +1,7 @@
 const { Bot } = require("grammy");
+const express = require("express");
+const schedule = require("node-schedule");
+require("dotenv").config();
 
 const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
 
@@ -55,5 +58,6 @@ if (process.env.NODE_ENV === "production") {
   });
 } else {
   // Use Long Polling for development
+  console.log(`Bot working on localhost`);
   bot.start();
 }
