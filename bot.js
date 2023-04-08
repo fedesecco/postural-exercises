@@ -46,7 +46,7 @@ const scheduler1 = schedule.scheduleJob("0 9 * * *", function () {
   });
 });
 
-const scheduler2 = schedule.scheduleJob("45 18  * * *", function () {
+const scheduler2 = schedule.scheduleJob("50 18  * * *", function () {
   Object.values(chatIDs).forEach((chatID) => {
     bot.api.sendMessage(chatID, scheduledMessage1);
   });
