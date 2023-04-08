@@ -38,10 +38,10 @@ const channelMessage1 = schedule.scheduleJob("0 9 * * *", function () {
   bot.api.sendMessage(testChannelID, message1);
 });
 
-const groupMessage2 = schedule.scheduleJob("1 0 1 8 * * *", function () {
+const groupMessage2 = schedule.scheduleJob("15 18 * * *", function () {
   bot.api.sendMessage(testGroupID, message2);
 });
-const channelMessage2 = schedule.scheduleJob("1 0 1 8 * * *", function () {
+const channelMessage2 = schedule.scheduleJob("15 18 * * *", function () {
   bot.api.sendMessage(testChannelID, message2);
 });
 
