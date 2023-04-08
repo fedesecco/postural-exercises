@@ -10,6 +10,7 @@ const helpMessage = `Nessun aiuto a ancora disponibile.`;
 
 //scheduled message
 const message9Am = `Buongiorno, sono le 9! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
+const message13Am = `Buongiorno, sono le 13! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
 
 //groupID mio ale e bot
 const testGroupID = -100956704196;
@@ -34,6 +35,14 @@ const group9AmMessage = schedule.scheduleJob("0 9 * * *", function () {
 });
 const channel9AmMessage = schedule.scheduleJob("0 9 * * *", function () {
   bot.api.sendMessage(testChannelID, message9Am);
+});
+
+//scheduler
+const group13AmMessage = schedule.scheduleJob("1 3 * * *", function () {
+  bot.api.sendMessage(testGroupID, message13Am);
+});
+const channel13AmMessage = schedule.scheduleJob("1 3 * * *", function () {
+  bot.api.sendMessage(testChannelID, message13Am);
 });
 
 //deploy
