@@ -69,11 +69,10 @@ if (process.env.NODE_ENV === "production") {
   const app = express();
   app.use(express.json());
   app.use(webhookCallback(bot, "express"));
-
+  setInterval(() => sendMessageAtSpecificTime("12:15"), 60 * 1000);
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`Bot listening on port ${PORT}`);
-    setInterval(() => sendMessageAtSpecificTime("20:34"), 60 * 1000);
   });
 } else {
   // Use Long Polling for development
