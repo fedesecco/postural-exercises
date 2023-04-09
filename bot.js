@@ -10,11 +10,11 @@ const introductionMessage = `Ciao! Sono un bot che selezionerà per te degli ese
 const helpMessage = `Nessun aiuto a ancora disponibile.`;
 
 //scheduled message
-const scheduledMessage1 = `Buongiorno, sono le ${getTime()}! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
+const scheduledMessage1 = `Buongiorno, sono le ${getTime()}! Ed io puntuale invio un messaggio.`;
 
 const chatIDs = {
-  //testGroup1: -100956704196,
-  testChannel1: -1001859807156,
+  testGroup1: -956704196,
+  //testChannel1: -1001859807156,
 };
 
 let scheduledHours = "";
@@ -63,12 +63,12 @@ bot.command("test", (ctx) => {
 
 bot.command("setMessageTime", (ctx) => {
   console.log("/setMessageTime triggered");
-  let data = ctx.match;
-  let [scheduledHours, scheduledMinutes] = data.split(":");
+  let time = ctx.match;
+  [scheduledHours, scheduledMinutes] = time.split(":");
   ctx.reply(
-    `Server time is  ${new Date().toLocaleString()}. Job scheduled every day at ${
+    `Job scheduled every day at <b>${
       ctx.match
-    }`,
+    }</b>. (Server time is  ${new Date().toLocaleString()}).`,
     {
       parse_mode: "HTML",
     }
@@ -83,7 +83,7 @@ function sendMessageAtSpecificTime() {
   });
 }
 
-const j = schedule.scheduleJob(
+schedule.scheduleJob(
   `${scheduledMinutes} ${scheduledHours} * * *`,
   function () {
     sendMessageAtSpecificTime();
