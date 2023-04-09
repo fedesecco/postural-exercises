@@ -2,6 +2,7 @@ const { Bot, webhookCallback } = require("grammy");
 const express = require("express");
 require("dotenv").config();
 
+const app = express();
 const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
 
 //wiki messages
