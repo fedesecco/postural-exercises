@@ -17,6 +17,9 @@ const chatIDs = {
   testChannel1: -1001859807156,
 };
 
+let scheduledHours = "";
+let scheduledMinutes = "";
+
 function getTime() {
   let date = new Date();
   let hours = (date.getUTCHours() + 2).toString();
@@ -58,17 +61,34 @@ bot.command("test", (ctx) => {
   });
 });
 
+bot.command("setMessageTime", (ctx) => {
+  console.log("/setMessageTime triggered");
+  let data = ctx.match;
+  let [scheduledHours, scheduledMinutes] = data.split(":");
+  ctx.reply(
+    `Server time is  ${new Date().toLocaleString()}. Job scheduled every day at ${
+      ctx.match
+    }`,
+    {
+      parse_mode: "HTML",
+    }
+  );
+});
+
 // scheduled message
-function sendMessageAtSpecificTime(targetTime) {
+function sendMessageAtSpecificTime() {
   console.log(`${getServerTime()}: sendMessageAtSpecificTime() triggered`);
   Object.values(chatIDs).forEach((chatID) => {
     bot.api.sendMessage(chatID, scheduledMessage1);
   });
 }
 
-const j = schedule.scheduleJob("05 17 * * *", function () {
-  sendMessageAtSpecificTime();
-});
+const j = schedule.scheduleJob(
+  `${scheduledMinutes} ${scheduledHours} * * *`,
+  function () {
+    sendMessageAtSpecificTime();
+  }
+);
 
 //deploy
 if (process.env.NODE_ENV === "production") {
