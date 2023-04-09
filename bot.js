@@ -26,6 +26,12 @@ function getTime() {
   }
   let result = hours + ":" + minutes;
   return result;
+  // 19:50
+}
+
+function getServerTime() {
+  return new Date().toLocaleString();
+  // 4/9/2023, 2:15:30 PM
 }
 
 // PEstart
@@ -45,28 +51,24 @@ bot.command("PEhelp", (ctx) => {
 // test
 bot.command("test", (ctx) => {
   console.log("/test triggered");
-  const specificTime = ctx.match;
-  setInterval(() => sendMessageAtSpecificTime(specificTime), 60 * 1000);
-  ctx.reply(`I will send a message at ${specificTime}`, {
+  // const specificTime = ctx.match;
+  // setInterval(() => sendMessageAtSpecificTime(specificTime), 60 * 1000);
+  ctx.reply(`Server time is  ${new Date().toLocaleString()}`, {
     parse_mode: "HTML",
   });
 });
 
 // scheduled message
 function sendMessageAtSpecificTime(targetTime) {
-  const time = getTime();
-  console.log(`Time check: time = ${time}, target = ${targetTime}`);
-  if (time == targetTime) {
-    console.log("send scheduled message triggered");
-    Object.values(chatIDs).forEach((chatID) => {
-      bot.api.sendMessage(chatID, scheduledMessage1);
-    });
-  }
+  console.log(`${getServerTime()}: sendMessageAtSpecificTime() triggered`);
+  Object.values(chatIDs).forEach((chatID) => {
+    bot.api.sendMessage(chatID, scheduledMessage1);
+  });
 }
 
-/* const j = schedule.scheduleJob("27 12 * * *", function () {
-  sendMessageAtSpecificTime("12:27");
-}); */
+const j = schedule.scheduleJob("0 19 * * *", function () {
+  sendMessageAtSpecificTime();
+});
 
 //deploy
 if (process.env.NODE_ENV === "production") {
@@ -76,7 +78,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(webhookCallback(bot, "express"));
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
-    console.log(`Bot listening on port ${PORT}`);
+    console.log(`${getServerTime()}: bot listening on port ${PORT}.`);
   });
 } else {
   // Use Long Polling for development
