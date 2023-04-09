@@ -17,6 +17,7 @@ const chatIDs = {
   //testChannel1: -1001859807156,
 };
 
+let scheduledCETHours = "";
 let scheduledHours = "";
 let scheduledMinutes = "";
 
@@ -56,7 +57,7 @@ bot.command("test", (ctx) => {
   console.log("/test triggered");
   // const specificTime = ctx.match;
   // setInterval(() => sendMessageAtSpecificTime(specificTime), 60 * 1000);
-  ctx.reply(`Server time is  ${new Date().toLocaleString()}`, {
+  ctx.reply(`Server time is  ${getServerTime()}`, {
     parse_mode: "HTML",
   });
 });
@@ -64,11 +65,12 @@ bot.command("test", (ctx) => {
 bot.command("setMessageTime", (ctx) => {
   console.log("/setMessageTime triggered");
   let time = ctx.match;
-  [scheduledHours, scheduledMinutes] = time.split(":");
+  [scheduledCETHours, scheduledMinutes] = time.split(":");
+  scheduledHours = (Number(scheduledCETHours) - 2).toString();
   ctx.reply(
     `Job scheduled every day at <b>${
       ctx.match
-    }</b>. (Server time is  ${new Date().toLocaleString()}).`,
+    }</b>. (Server time is  ${getServerTime()}).`,
     {
       parse_mode: "HTML",
     }
@@ -98,7 +100,9 @@ if (process.env.NODE_ENV === "production") {
   app.use(webhookCallback(bot, "express"));
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
-    console.log(`${getServerTime()}: bot listening on port ${PORT}.`);
+    console.log(
+      `Bot listening on port ${PORT}. Server time: ${getServerTime()}`
+    );
   });
 } else {
   // Use Long Polling for development
