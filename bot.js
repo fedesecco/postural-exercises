@@ -1,6 +1,5 @@
 const { Bot, webhookCallback } = require("grammy");
 const express = require("express");
-const schedule = require("node-schedule");
 require("dotenv").config();
 
 const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
@@ -45,6 +44,19 @@ bot.command("sendExercises", (ctx) => {
     bot.api.sendMessage(chatID, scheduledMessage1);
   });
 });
+
+const logRequest = (req, res, next) => {
+  if (req.method === "POST" && req.path === "/sendExercises") {
+    console.log(`sendExercises triggered`);
+    Object.values(chatIDs).forEach((chatID) => {
+      bot.api.sendMessage(chatID, scheduledMessage1);
+    });
+  }
+  next();
+};
+
+// Register the middleware function
+app.use(logRequest);
 
 //deploy
 if (process.env.NODE_ENV === "production") {
