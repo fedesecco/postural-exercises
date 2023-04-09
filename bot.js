@@ -40,7 +40,10 @@ function sendMessageAtSpecificTime(targetTime) {
     });
   }
 }
-setInterval(() => sendMessageAtSpecificTime("12:17"), 60 * 1000);
+//setInterval(() => sendMessageAtSpecificTime("12:17"), 60 * 1000);
+const j = schedule.scheduleJob("27 12 * * *", function () {
+  sendMessageAtSpecificTime("12:27");
+});
 
 // PEstart
 bot.command("PEstart", (ctx) => {
@@ -65,7 +68,7 @@ bot.command("test", (ctx) => {
 });
 
 //deploy
-if (!process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production") {
   // Use Webhooks for the production server
   const app = express();
   app.use(express.json());
