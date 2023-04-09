@@ -9,7 +9,7 @@ const introductionMessage = `Ciao! Sono un bot che selezionerà per te degli ese
 const helpMessage = `Nessun aiuto a ancora disponibile.`;
 
 //scheduled message
-const scheduledMessage1 = `Invio esercizi ore 22:10`;
+const scheduledMessage1 = `Se ci fossero esericizi, io ora li avrei inviati!`;
 
 const chatIDs = {
   testGroup1: -956704196,
