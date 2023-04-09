@@ -8,7 +8,6 @@ const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
 //wiki messages
 const introductionMessage = `Ciao! Sono un bot che selezionerà per te degli esercizi specifici da fare ogni giorno! Gli esercizi sono a cura del dott. Alessandro Mantoan, laureato in bla bla bla. Il messaggio arriverà ogni giorno alle 9!`;
 const helpMessage = `Nessun aiuto a ancora disponibile.`;
-const testMessage = `Sono le ${getTime()}.`;
 
 //scheduled message
 const scheduledMessage1 = `Buongiorno, sono le ${getTime()}! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
@@ -29,22 +28,6 @@ function getTime() {
   return result;
 }
 
-// scheduled message
-function sendMessageAtSpecificTime(targetTime) {
-  const time = getTime();
-  console.log(`Time check: time = ${time}, target = ${targetTime}`);
-  if (time == targetTime) {
-    console.log("send scheduled message triggered");
-    Object.values(chatIDs).forEach((chatID) => {
-      bot.api.sendMessage(chatID, scheduledMessage1);
-    });
-  }
-}
-
-/* const j = schedule.scheduleJob("27 12 * * *", function () {
-  sendMessageAtSpecificTime("12:27");
-}); */
-
 // PEstart
 bot.command("PEstart", (ctx) => {
   console.log("/PEstart triggered");
@@ -62,11 +45,28 @@ bot.command("PEhelp", (ctx) => {
 // test
 bot.command("test", (ctx) => {
   console.log("/test triggered");
-  ctx.reply(testMessage, {
+  const specificTime = ctx.match;
+  setInterval(() => sendMessageAtSpecificTime(specificTime), 60 * 1000);
+  ctx.reply(`I will send a message at ${specificTime}`, {
     parse_mode: "HTML",
   });
-  setInterval(() => sendMessageAtSpecificTime("12:17"), 60 * 1000);
 });
+
+// scheduled message
+function sendMessageAtSpecificTime(targetTime) {
+  const time = getTime();
+  console.log(`Time check: time = ${time}, target = ${targetTime}`);
+  if (time == targetTime) {
+    console.log("send scheduled message triggered");
+    Object.values(chatIDs).forEach((chatID) => {
+      bot.api.sendMessage(chatID, scheduledMessage1);
+    });
+  }
+}
+
+/* const j = schedule.scheduleJob("27 12 * * *", function () {
+  sendMessageAtSpecificTime("12:27");
+}); */
 
 //deploy
 if (process.env.NODE_ENV === "production") {
