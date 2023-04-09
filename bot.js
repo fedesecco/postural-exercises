@@ -2,7 +2,6 @@ const { Bot, webhookCallback } = require("grammy");
 const express = require("express");
 require("dotenv").config();
 
-const app = express();
 const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
 
 //wiki messages
@@ -34,7 +33,7 @@ bot.command("PEhelp", (ctx) => {
 // test
 bot.command("test", (ctx) => {
   console.log("/test triggered");
-  ctx.reply(`....`, {
+  ctx.reply(`Ci sono ci sono`, {
     parse_mode: "HTML",
   });
 });
@@ -56,14 +55,13 @@ const logRequest = (req, res, next) => {
   next();
 };
 
-// Register the middleware function
-app.use(logRequest);
-
 //deploy
 if (process.env.NODE_ENV === "production") {
   // Use Webhooks for the production server
   const app = express();
+
   app.use(express.json());
+  app.use(logRequest);
   app.use(webhookCallback(bot, "express"));
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
