@@ -40,6 +40,7 @@ function sendMessageAtSpecificTime(targetTime) {
     });
   }
 }
+setInterval(() => sendMessageAtSpecificTime("12:17"), 60 * 1000);
 
 // PEstart
 bot.command("PEstart", (ctx) => {
@@ -64,12 +65,11 @@ bot.command("test", (ctx) => {
 });
 
 //deploy
-if (process.env.NODE_ENV === "production") {
+if (!process.env.NODE_ENV === "production") {
   // Use Webhooks for the production server
   const app = express();
   app.use(express.json());
   app.use(webhookCallback(bot, "express"));
-  setInterval(() => sendMessageAtSpecificTime("12:15"), 60 * 1000);
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`Bot listening on port ${PORT}`);
