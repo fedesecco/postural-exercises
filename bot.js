@@ -13,7 +13,7 @@ const helpMessage = `Nessun aiuto a ancora disponibile.`;
 const scheduledMessage1 = `Buongiorno, sono le ${getTime()}! Ed io puntuale invio un messaggio. Domani invece invierò esercizi anzichè questo messaggino del cazzo!`;
 
 const chatIDs = {
-  testGroup1: -100956704196,
+  //testGroup1: -100956704196,
   testChannel1: -1001859807156,
 };
 
@@ -66,7 +66,7 @@ function sendMessageAtSpecificTime(targetTime) {
   });
 }
 
-const j = schedule.scheduleJob("0 17 * * *", function () {
+const j = schedule.scheduleJob("05 17 * * *", function () {
   sendMessageAtSpecificTime();
 });
 
