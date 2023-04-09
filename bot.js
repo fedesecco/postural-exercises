@@ -66,7 +66,7 @@ function sendMessageAtSpecificTime(targetTime) {
   });
 }
 
-const j = schedule.scheduleJob("0 19 * * *", function () {
+const j = schedule.scheduleJob("0 17 * * *", function () {
   sendMessageAtSpecificTime();
 });
 
