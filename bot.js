@@ -40,10 +40,10 @@ function sendMessageAtSpecificTime(targetTime) {
     });
   }
 }
-//setInterval(() => sendMessageAtSpecificTime("12:17"), 60 * 1000);
-const j = schedule.scheduleJob("27 12 * * *", function () {
+
+/* const j = schedule.scheduleJob("27 12 * * *", function () {
   sendMessageAtSpecificTime("12:27");
-});
+}); */
 
 // PEstart
 bot.command("PEstart", (ctx) => {
@@ -65,6 +65,7 @@ bot.command("test", (ctx) => {
   ctx.reply(testMessage, {
     parse_mode: "HTML",
   });
+  setInterval(() => sendMessageAtSpecificTime("12:17"), 60 * 1000);
 });
 
 //deploy
