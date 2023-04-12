@@ -14,3 +14,7 @@ export enum Chats {
     Ale = '',
     Bot = '',
 }
+
+export enum People{
+    
+}

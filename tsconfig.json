@@ -1,64 +1,13 @@
 {
-  "compilerOptions": {
-    /* Projects */
-    // "incremental": true,                              
-    // "composite": true,                                
-    // "tsBuildInfoFile": "./.tsbuildinfo",              
-    // "disableSourceOfProjectReferenceRedirect": true,  
-    // "disableSolutionSearching": true,                 
-    // "disableReferencedProjectLoad": true,             
-
-    /* Language and Environment */
-    "target": "es2021",                                 
-    "lib": ["DOM", "ES2021"],                            
-    // "jsx": "preserve",                                
-    // "experimentalDecorators": true,                   
-    // "emitDecoratorMetadata": true,                    
-    // "jsxFactory": "",                                 
-    // "jsxFragmentFactory": "",                         
-    // "jsxImportSource": "",                            
-    // "reactNamespace": "",                             
-    // "noLib": true,                                    
-    // "useDefineForClassFields": true,                  
-    // "moduleDetection": "auto",                        
-
-    /* Modules */
-    "module": "commonjs",  
-    "esModuleInterop": true,                             
-    // "rootDir": "./",                                  
-    // "moduleResolution": "node10",                     
-    // "baseUrl": "./",                                  
-    // "paths": {},                                      
-    // "rootDirs": [],                                   
-    // "typeRoots": [],                                  
-    // "types": [],                                      
-    // "allowUmdGlobalAccess": true,                     
-    // "moduleSuffixes": [],                             
-    // "allowImportingTsExtensions": true,               
-    // "resolvePackageJsonExports": true,                
-    // "resolvePackageJsonImports": true,                
-    // "customConditions": [],                           
-    // "resolveJsonModule": true,                        
-    // "allowArbitraryExtensions": true,                 
-    // "noResolve": true,                                
-
-    /* JavaScript Support */
-    // "allowJs": true,                                  
-    // "checkJs": true,                                  
-    // "maxNodeModuleJsDepth": 1,                        
-
-    /* Emit */
-    "declaration": true,                              
-    "declarationMap": true,                           
-    "emitDeclarationOnly": true,                      
-    // "sourceMap": true,                                
-    // "inlineSourceMap": true,                          
-    // "outFile": "./",                                  
-    "outDir": "./dist",                                
-    // "removeComments": true,                           
-    "preserveConstEnums": true,                        
-    "stripInternal": true                              
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "stripInternal": true,
+        "outDir": "./dist"
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "**/*.spec.ts"]
 }
