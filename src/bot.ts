@@ -3,8 +3,18 @@ import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 import { Messages, Chats } from './enums';
+import { initializeApp } from "firebase/app";
+import { getDatabase } from "firebase/database";
 
-const bot = new Bot(process.env.TELEGRAM_TOKEN || '');
+
+// TELEGRAM BOT INIT
+const token = process.env.TELEGRAM_TOKEN;
+if(!token){console.error("No token!")};
+const bot = new Bot(token);
+
+//FIREBASE REALTIME DATABASE INIT
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
 const activeChats = [Chats.ChannelTest];
 
@@ -29,13 +39,6 @@ bot.command('test', (ctx) => {
         parse_mode: 'HTML',
     });
 });
-
-/* bot.command('sendExercises', (ctx) => {
-    console.log(`sendExercises triggered`);
-    activeChats.forEach(chat=>{
-        bot.api.sendMessage(chat, Messages.Esercizi1);
-    });
-}); */
 
 const logRequest = (req: Request, res: Response, next: NextFunction) => {
     if (req.method === 'POST' && req.path === '/sendExercises') {
