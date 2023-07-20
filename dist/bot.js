@@ -45,12 +45,14 @@ const logRequest = (req, res, next) => {
         console.log(`sendExercises triggered`);
         const exercises = (0, database_1.ref)(db, 'exercises');
         const numberOfExercises = Object.keys(exercises).length;
-        const exerciseOfTheDay = exercises[(0, utils_1.randomNumber)(0, numberOfExercises).toString()];
+        const numberOfTheDay = (0, utils_1.randomNumber)(0, numberOfExercises).toString();
+        const exerciseOfTheDay = exercises[numberOfTheDay];
         let timesUsed = exerciseOfTheDay.timesUsed;
         activeChats.forEach((chat) => {
             bot.api.sendMessage(chat, (0, enums_1.exercisesMessage)(exerciseOfTheDay.name, timesUsed));
         });
         timesUsed++;
+        (0, database_1.set)((0, database_1.ref)(db, 'exercises/' + numberOfTheDay + '/timesUsed'), timesUsed);
     }
     next();
 };

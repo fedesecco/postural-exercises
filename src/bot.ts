@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import { Messages, Chats, exercisesMessage } from './enums';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref } from 'firebase/database';
+import { getDatabase, ref, set } from 'firebase/database';
 import { randomNumber } from './utils';
 
 // TELEGRAM BOT INIT
@@ -50,12 +50,14 @@ const logRequest = (req: Request, res: Response, next: NextFunction) => {
         console.log(`sendExercises triggered`);
         const exercises = ref(db, 'exercises');
         const numberOfExercises = Object.keys(exercises).length;
-        const exerciseOfTheDay = exercises[randomNumber(0, numberOfExercises).toString()];
+        const numberOfTheDay = randomNumber(0, numberOfExercises).toString();
+        const exerciseOfTheDay = exercises[numberOfTheDay];
         let timesUsed = exerciseOfTheDay.timesUsed;
         activeChats.forEach((chat) => {
             bot.api.sendMessage(chat, exercisesMessage(exerciseOfTheDay.name, timesUsed));
         });
         timesUsed++;
+        set(ref(db, 'exercises/' + numberOfTheDay + '/timesUsed'), timesUsed);
     }
     next();
 };
