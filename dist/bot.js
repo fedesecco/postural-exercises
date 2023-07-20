@@ -54,6 +54,7 @@ bot.command('test', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
 }));
 const logRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.method === 'POST' && req.path === '/sendExercises') {
+        const supabase = (0, supabase_js_1.createClient)(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
         console.log(`sendExercises triggered`);
         const { data, error } = yield supabase.from('exercises').select();
         const numberOfExercises = data.length;
