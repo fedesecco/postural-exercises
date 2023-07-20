@@ -13,9 +13,6 @@ if (!token) {
 }
 const bot = new Bot(token);
 
-// SUPABASE DATABASE INIT
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
-
 const activeChats = [Chats.ChannelTest];
 
 // start
@@ -34,6 +31,8 @@ bot.command('help', (ctx) => {
 });
 // test
 bot.command('test', async (ctx) => {
+    // SUPABASE DATABASE INIT
+    const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
     console.log('/test triggered');
     const { data, error } = await supabase.from('exercises').select();
     if (error) {
@@ -50,6 +49,8 @@ bot.command('test', async (ctx) => {
 
 const logRequest = async (req: Request, res: Response, next: NextFunction) => {
     if (req.method === 'POST' && req.path === '/sendExercises') {
+        // SUPABASE DATABASE INIT
+        const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
         console.log(`sendExercises triggered`);
         const { data, error } = await supabase.from('exercises').select();
         const numberOfExercises = data.length;
