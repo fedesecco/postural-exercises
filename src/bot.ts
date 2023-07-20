@@ -3,8 +3,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 import { Messages, Chats, exercisesMessage } from './enums';
-import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set } from 'firebase/database';
+import { createClient } from '@supabase/supabase-js';
 import { randomNumber } from './utils';
 
 // TELEGRAM BOT INIT
@@ -14,9 +13,8 @@ if (!token) {
 }
 const bot = new Bot(token);
 
-//FIREBASE REALTIME DATABASE INIT
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+// SUPABASE DATABASE INIT
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 const activeChats = [Chats.ChannelTest];
 
@@ -27,7 +25,7 @@ bot.command('start', (ctx) => {
         parse_mode: 'HTML',
     });
 });
-// PEhelp
+// help
 bot.command('help', (ctx) => {
     console.log('/help triggered');
     ctx.reply(Messages.Help, {
@@ -35,29 +33,30 @@ bot.command('help', (ctx) => {
     });
 });
 // test
-bot.command('test', (ctx) => {
+bot.command('test', async (ctx) => {
     console.log('/test triggered');
-    const exercises = ref(db, 'exercises');
-    const numberOfExercises = Object.keys(exercises).length;
-    const exerciseOfTheDay = exercises[randomNumber(1, numberOfExercises).toString()];
-    ctx.reply(JSON.stringify(exerciseOfTheDay), {
+    const { data, error } = await supabase.from('exercises').select();
+    const numberOfExercises = data.length;
+    const numberOfTheDay = randomNumber(0, numberOfExercises).toString();
+    const exerciseOfTheDay = data[numberOfTheDay];
+    ctx.reply('exercise of the day: ' + JSON.stringify(exerciseOfTheDay), {
         parse_mode: 'HTML',
     });
 });
 
-const logRequest = (req: Request, res: Response, next: NextFunction) => {
+const logRequest = async (req: Request, res: Response, next: NextFunction) => {
     if (req.method === 'POST' && req.path === '/sendExercises') {
         console.log(`sendExercises triggered`);
-        const exercises = ref(db, 'exercises');
-        const numberOfExercises = Object.keys(exercises).length;
-        const numberOfTheDay = randomNumber(0, numberOfExercises).toString();
-        const exerciseOfTheDay = exercises[numberOfTheDay];
+        const { data, error } = await supabase.from('exercises').select();
+        const numberOfExercises = data.length;
+        const numberOfTheDay = randomNumber(0, numberOfExercises);
+        const exerciseOfTheDay = data[numberOfTheDay];
         let timesUsed = exerciseOfTheDay.timesUsed;
         activeChats.forEach((chat) => {
             bot.api.sendMessage(chat, exercisesMessage(exerciseOfTheDay.name, timesUsed));
         });
         timesUsed++;
-        set(ref(db, 'exercises/' + numberOfTheDay + '/timesUsed'), timesUsed);
+        await supabase.from('exercises').update({ timesUsed: timesUsed }).eq('id', numberOfTheDay);
     }
     next();
 };
