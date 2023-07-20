@@ -8,7 +8,16 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const enums_1 = require("./enums");
-const bot = new grammy_1.Bot(process.env.TELEGRAM_TOKEN || '');
+const app_1 = require("firebase/app");
+const database_1 = require("firebase/database");
+const utils_1 = require("./utils");
+const token = process.env.TELEGRAM_TOKEN;
+if (!token) {
+    console.error('No token!');
+}
+const bot = new grammy_1.Bot(token);
+const app = (0, app_1.initializeApp)(firebaseConfig);
+const db = (0, database_1.getDatabase)(app);
 const activeChats = [enums_1.Chats.ChannelTest];
 bot.command('start', (ctx) => {
     console.log('/start triggered');
@@ -24,16 +33,24 @@ bot.command('help', (ctx) => {
 });
 bot.command('test', (ctx) => {
     console.log('/test triggered');
-    ctx.reply(`Ci sono ci sono`, {
+    const exercises = (0, database_1.ref)(db, 'exercises');
+    const numberOfExercises = Object.keys(exercises).length;
+    const exerciseOfTheDay = exercises[(0, utils_1.randomNumber)(1, numberOfExercises).toString()];
+    ctx.reply(JSON.stringify(exerciseOfTheDay), {
         parse_mode: 'HTML',
     });
 });
 const logRequest = (req, res, next) => {
     if (req.method === 'POST' && req.path === '/sendExercises') {
         console.log(`sendExercises triggered`);
-        activeChats.forEach(chat => {
-            bot.api.sendMessage(chat, enums_1.Messages.Esercizi1);
+        const exercises = (0, database_1.ref)(db, 'exercises');
+        const numberOfExercises = Object.keys(exercises).length;
+        const exerciseOfTheDay = exercises[(0, utils_1.randomNumber)(0, numberOfExercises).toString()];
+        let timesUsed = exerciseOfTheDay.timesUsed;
+        activeChats.forEach((chat) => {
+            bot.api.sendMessage(chat, (0, enums_1.exercisesMessage)(exerciseOfTheDay.name, timesUsed));
         });
+        timesUsed++;
     }
     next();
 };

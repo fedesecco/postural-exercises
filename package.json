@@ -14,7 +14,7 @@
         "typescript": "^5.0.4"
     },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "patch": "npx tsc && npm version patch --commit-hooks=false --git-tag-version=false"
     },
     "repository": {
         "type": "git",
