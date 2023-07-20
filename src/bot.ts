@@ -37,7 +37,8 @@ bot.command('test', async (ctx) => {
     console.log('/test triggered');
     const { data, error } = await supabase.from('exercises').select();
     const numberOfExercises = data.length;
-    const numberOfTheDay = randomNumber(0, numberOfExercises).toString();
+    console.log('data[0]: ', data[0]);
+    const numberOfTheDay = randomNumber(0, numberOfExercises);
     const exerciseOfTheDay = data[numberOfTheDay];
     ctx.reply('exercise of the day: ' + JSON.stringify(exerciseOfTheDay), {
         parse_mode: 'HTML',
