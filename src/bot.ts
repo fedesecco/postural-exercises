@@ -12,6 +12,12 @@ if (!token) {
     console.error('No token!');
 }
 const bot = new Bot(token);
+let storage: any;
+
+// SUPABASE DATABASE INIT
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, {
+    auth: { storage: storage },
+});
 
 const activeChats = [Chats.ChannelTest];
 
@@ -49,8 +55,6 @@ bot.command('test', async (ctx) => {
 
 const logRequest = async (req: Request, res: Response, next: NextFunction) => {
     if (req.method === 'POST' && req.path === '/sendExercises') {
-        // SUPABASE DATABASE INIT
-        const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
         console.log(`sendExercises triggered`);
         const { data, error } = await supabase.from('exercises').select();
         const numberOfExercises = data.length;
