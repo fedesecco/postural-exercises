@@ -45,8 +45,9 @@ bot.command('test', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('/test triggered');
     const { data, error } = yield supabase.from('exercises').select();
     if (error) {
-        console.log(error);
+        console.log('Error on select(): ', error);
     }
+    console.log('data: ', data);
     const numberOfExercises = data.length;
     console.log('data[0]: ', data[0]);
     const numberOfTheDay = (0, utils_1.randomNumber)(0, numberOfExercises);
