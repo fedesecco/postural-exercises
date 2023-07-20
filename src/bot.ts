@@ -40,8 +40,9 @@ bot.command('test', async (ctx) => {
     console.log('/test triggered');
     const { data, error } = await supabase.from('exercises').select();
     if (error) {
-        console.log(error);
+        console.log('Error on select(): ', error);
     }
+    console.log('data: ', data);
     const numberOfExercises = data.length;
     console.log('data[0]: ', data[0]);
     const numberOfTheDay = randomNumber(0, numberOfExercises);

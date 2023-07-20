@@ -2,7 +2,7 @@
     "name": "postural-exercises",
     "author": "Federico Secco",
     "description": "",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "license": "ISC",
     "main": "dist/bot.js",
     "scripts": {
