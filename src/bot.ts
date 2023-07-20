@@ -5,6 +5,7 @@ dotenv.config();
 import { Messages, Chats, exercisesMessage } from './enums';
 import { createClient } from '@supabase/supabase-js';
 import { randomNumber } from './utils';
+import session from 'express-session';
 
 // TELEGRAM BOT INIT
 const token = process.env.TELEGRAM_TOKEN;
@@ -15,9 +16,15 @@ const bot = new Bot(token);
 let storage: any;
 
 // SUPABASE DATABASE INIT
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, {
-    auth: { storage: storage },
-});
+const app = express();
+app.use(
+    session({
+        secret: 'sdgsdgsdgdsg',
+        resave: false,
+        saveUninitialized: true,
+    })
+);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 const activeChats = [Chats.ChannelTest];
 
