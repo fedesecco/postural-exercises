@@ -37,8 +37,6 @@ bot.command('help', (ctx) => {
 });
 // test
 bot.command('test', async (ctx) => {
-    // SUPABASE DATABASE INIT
-    const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
     console.log('/test triggered');
     const { data, error } = await supabase.from('exercises').select();
     if (error) {
