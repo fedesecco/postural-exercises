@@ -5,6 +5,12 @@ export enum Messages {
     Help = 'Nessun aiuto a ancora disponibile.',
     Esercizi1 = 'Se ci fossero esericizi, io ora li avrei inviati!',
 }
+/** `L'esercizio da fare oggi è: ${name}! Fin'ora è stato estratto ${times} volte.` */
+export function exercisesMessage(name: string, times: number) {
+    if (times > 0) {
+        return `L'esercizio da fare oggi è: ${name}! Fin'ora è stato estratto ${times} volte.`;
+    } else return `L'esercizio da fare oggi è: ${name}! Non era mai uscito prima!`;
+}
 
 export enum Chats {
     ChatAleFedeBot = -956704196,
@@ -15,6 +21,4 @@ export enum Chats {
     Bot = '',
 }
 
-export enum People{
-    
-}
+export enum People {}
