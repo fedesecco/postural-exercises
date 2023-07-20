@@ -2,14 +2,16 @@ import { Bot, webhookCallback } from 'grammy';
 import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
-import { Messages, Chats } from './enums';
-import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
-
+import { Messages, Chats, exercisesMessage } from './enums';
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref } from 'firebase/database';
+import { randomNumber } from './utils';
 
 // TELEGRAM BOT INIT
 const token = process.env.TELEGRAM_TOKEN;
-if(!token){console.error("No token!")};
+if (!token) {
+    console.error('No token!');
+}
 const bot = new Bot(token);
 
 //FIREBASE REALTIME DATABASE INIT
@@ -35,7 +37,10 @@ bot.command('help', (ctx) => {
 // test
 bot.command('test', (ctx) => {
     console.log('/test triggered');
-    ctx.reply(`Ci sono ci sono`, {
+    const exercises = ref(db, 'exercises');
+    const numberOfExercises = Object.keys(exercises).length;
+    const exerciseOfTheDay = exercises[randomNumber(1, numberOfExercises).toString()];
+    ctx.reply(JSON.stringify(exerciseOfTheDay), {
         parse_mode: 'HTML',
     });
 });
@@ -43,9 +48,14 @@ bot.command('test', (ctx) => {
 const logRequest = (req: Request, res: Response, next: NextFunction) => {
     if (req.method === 'POST' && req.path === '/sendExercises') {
         console.log(`sendExercises triggered`);
-        activeChats.forEach(chat=>{
-            bot.api.sendMessage(chat, Messages.Esercizi1);
+        const exercises = ref(db, 'exercises');
+        const numberOfExercises = Object.keys(exercises).length;
+        const exerciseOfTheDay = exercises[randomNumber(0, numberOfExercises).toString()];
+        let timesUsed = exerciseOfTheDay.timesUsed;
+        activeChats.forEach((chat) => {
+            bot.api.sendMessage(chat, exercisesMessage(exerciseOfTheDay.name, timesUsed));
         });
+        timesUsed++;
     }
     next();
 };
