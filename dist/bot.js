@@ -33,6 +33,7 @@ app.use((0, express_session_1.default)({
     saveUninitialized: true,
 }));
 const supabase = (0, supabase_js_1.createClient)(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+console.log(supabase);
 const activeChats = [enums_1.Chats.ChannelTest];
 bot.command('start', (ctx) => {
     console.log('/start triggered');
