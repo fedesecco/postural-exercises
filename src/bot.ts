@@ -41,7 +41,7 @@ bot.command('help', (ctx) => {
 // test
 bot.command('test', async (ctx) => {
     console.log('/test triggered');
-    let { data: exercises, error } = await supabase.from('exercises').select('*');
+    let { data: exercises, error } = await supabase.from('exercises').select();
     if (error) {
         console.log('Error on select(): ', error);
     }
@@ -58,7 +58,7 @@ bot.command('test', async (ctx) => {
 const logRequest = async (req: Request, res: Response, next: NextFunction) => {
     if (req.method === 'POST' && req.path === '/sendExercises') {
         console.log(`sendExercises triggered`);
-        let { data: exercises, error } = await supabase.from('exercises').select('*');
+        let { data: exercises, error } = await supabase.from('exercises').select();
         const numberOfExercises = exercises.length;
         const numberOfTheDay = randomNumber(0, numberOfExercises);
         const exerciseOfTheDay = exercises[numberOfTheDay];

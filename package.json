@@ -2,11 +2,12 @@
     "name": "postural-exercises",
     "author": "Federico Secco",
     "description": "",
-    "version": "0.0.18",
+    "version": "0.0.19",
     "license": "ISC",
     "main": "dist/bot.js",
     "scripts": {
-        "go": "npm version patch --commit-hooks=false --git-tag-version=false && npx tsc"
+        "go": "npm version patch --commit-hooks=false --git-tag-version=false && npx tsc",
+        "start": "node dist/bot.js"
     },
     "devDependencies": {
         "@types/express": "^4.17.17",

@@ -45,7 +45,7 @@ bot.command('help', (ctx) => {
 });
 bot.command('test', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('/test triggered');
-    let { data: exercises, error } = yield supabase.from('exercises').select('*');
+    let { data: exercises, error } = yield supabase.from('exercises').select();
     if (error) {
         console.log('Error on select(): ', error);
     }
@@ -61,7 +61,7 @@ bot.command('test', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
 const logRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.method === 'POST' && req.path === '/sendExercises') {
         console.log(`sendExercises triggered`);
-        let { data: exercises, error } = yield supabase.from('exercises').select('*');
+        let { data: exercises, error } = yield supabase.from('exercises').select();
         const numberOfExercises = exercises.length;
         const numberOfTheDay = (0, utils_1.randomNumber)(0, numberOfExercises);
         const exerciseOfTheDay = exercises[numberOfTheDay];
