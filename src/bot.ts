@@ -48,15 +48,15 @@ bot.command('help', (ctx) => {
 // test
 bot.command('test', async (ctx) => {
     console.log('/test triggered');
-    const { data, error } = await supabase.from('exercises').select('*');
+    let { data: exercises, error } = await supabase.from('exercises').select('*');
     if (error) {
         console.log('Error on select(): ', error);
     }
-    console.log('data: ', data);
-    const numberOfExercises = data.length;
-    console.log('data[0]: ', data[0]);
+    console.log('exercises: ', exercises);
+    const numberOfExercises = exercises.length;
+    console.log('exercises[0]: ', exercises[0]);
     const numberOfTheDay = randomNumber(0, numberOfExercises);
-    const exerciseOfTheDay = data[numberOfTheDay];
+    const exerciseOfTheDay = exercises[numberOfTheDay];
     ctx.reply('exercise of the day: ' + JSON.stringify(exerciseOfTheDay), {
         parse_mode: 'HTML',
     });
@@ -65,10 +65,10 @@ bot.command('test', async (ctx) => {
 const logRequest = async (req: Request, res: Response, next: NextFunction) => {
     if (req.method === 'POST' && req.path === '/sendExercises') {
         console.log(`sendExercises triggered`);
-        const { data, error } = await supabase.from('exercises').select('*');
-        const numberOfExercises = data.length;
+        let { data: exercises, error } = await supabase.from('exercises').select('*');
+        const numberOfExercises = exercises.length;
         const numberOfTheDay = randomNumber(0, numberOfExercises);
-        const exerciseOfTheDay = data[numberOfTheDay];
+        const exerciseOfTheDay = exercises[numberOfTheDay];
         let timesUsed = exerciseOfTheDay.timesUsed;
         activeChats.forEach((chat) => {
             bot.api.sendMessage(chat, exercisesMessage(exerciseOfTheDay.name, timesUsed));
