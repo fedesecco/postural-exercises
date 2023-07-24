@@ -33,7 +33,9 @@ app.use((0, express_session_1.default)({
     saveUninitialized: true,
 }));
 const supabase = (0, supabase_js_1.createClient)(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
-console.log(supabase);
+if (supabase.storage) {
+    console.log(`Login successful.`);
+}
 const activeChats = [enums_1.Chats.ChannelTest];
 bot.command('start', (ctx) => {
     console.log('/start triggered');
@@ -49,7 +51,7 @@ bot.command('help', (ctx) => {
 });
 bot.command('test', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('/test triggered');
-    const { data, error } = yield supabase.from('exercises').select();
+    const { data, error } = yield supabase.from('exercises').select('*');
     if (error) {
         console.log('Error on select(): ', error);
     }
@@ -65,7 +67,7 @@ bot.command('test', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
 const logRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.method === 'POST' && req.path === '/sendExercises') {
         console.log(`sendExercises triggered`);
-        const { data, error } = yield supabase.from('exercises').select();
+        const { data, error } = yield supabase.from('exercises').select('*');
         const numberOfExercises = data.length;
         const numberOfTheDay = (0, utils_1.randomNumber)(0, numberOfExercises);
         const exerciseOfTheDay = data[numberOfTheDay];

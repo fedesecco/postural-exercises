@@ -25,7 +25,9 @@ app.use(
     })
 );
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
-console.log(supabase);
+if (supabase.storage) {
+    console.log(`Login successful.`);
+}
 
 const activeChats = [Chats.ChannelTest];
 
@@ -46,7 +48,7 @@ bot.command('help', (ctx) => {
 // test
 bot.command('test', async (ctx) => {
     console.log('/test triggered');
-    const { data, error } = await supabase.from('exercises').select();
+    const { data, error } = await supabase.from('exercises').select('*');
     if (error) {
         console.log('Error on select(): ', error);
     }
@@ -63,7 +65,7 @@ bot.command('test', async (ctx) => {
 const logRequest = async (req: Request, res: Response, next: NextFunction) => {
     if (req.method === 'POST' && req.path === '/sendExercises') {
         console.log(`sendExercises triggered`);
-        const { data, error } = await supabase.from('exercises').select();
+        const { data, error } = await supabase.from('exercises').select('*');
         const numberOfExercises = data.length;
         const numberOfTheDay = randomNumber(0, numberOfExercises);
         const exerciseOfTheDay = data[numberOfTheDay];
