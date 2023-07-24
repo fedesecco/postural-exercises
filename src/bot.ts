@@ -17,13 +17,6 @@ let storage: any;
 
 // SUPABASE DATABASE INIT
 const app = express();
-app.use(
-    session({
-        secret: 'sdgsdgsdgdsg',
-        resave: false,
-        saveUninitialized: true,
-    })
-);
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 if (supabase.storage) {
     console.log(`Login successful.`);

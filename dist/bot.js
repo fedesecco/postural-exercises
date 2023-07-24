@@ -19,7 +19,6 @@ dotenv_1.default.config();
 const enums_1 = require("./enums");
 const supabase_js_1 = require("@supabase/supabase-js");
 const utils_1 = require("./utils");
-const express_session_1 = __importDefault(require("express-session"));
 const token = process.env.TELEGRAM_TOKEN;
 if (!token) {
     console.error('No token!');
@@ -27,11 +26,6 @@ if (!token) {
 const bot = new grammy_1.Bot(token);
 let storage;
 const app = (0, express_1.default)();
-app.use((0, express_session_1.default)({
-    secret: 'sdgsdgsdgdsg',
-    resave: false,
-    saveUninitialized: true,
-}));
 const supabase = (0, supabase_js_1.createClient)(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 if (supabase.storage) {
     console.log(`Login successful.`);
