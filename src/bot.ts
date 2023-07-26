@@ -68,7 +68,7 @@ async function exercisesOfTheDay(exerN: number, updateTable: boolean) {
     const exIDs = [];
     const IDsOfTheDay = [];
     const exercisesOfTheDay = [];
-    let message = `Buongiorno! i ${exerN} esercizi da fare oggi sono:`;
+    let message = `Buongiorno! i ${exerN - 1} esercizi da fare oggi sono:\n`;
     for (let i = 0; i < 138; i++) {
         exIDs.push(i);
     }
@@ -89,7 +89,7 @@ async function exercisesOfTheDay(exerN: number, updateTable: boolean) {
     console.log('exercisesOfTheDay: ', exercisesOfTheDay);
 
     exercisesOfTheDay.forEach((ex) => {
-        message += `\n<b>${ex.name}</b>!`;
+        message += `\n<tg-spoiler><b>${ex.name}</b>!</tg-spoiler>`;
     });
     console.log('message: ', message);
 
@@ -102,7 +102,7 @@ async function exercisesOfTheDay(exerN: number, updateTable: boolean) {
         }
     });
     message +=
-        '\n ci vediamo domani per altri esercizi! Per ogni dubbio chiedete ad Ale che è il <tg-spoiler>Dio del corpo libero!</tg-spoiler> ;)';
+        '\n\nCi vediamo domani per altri esercizi! Per ogni dubbio chiedete ad Alessandro Mantoan, dottore in tutto, mega esperto della motoria, portatore di gelati a Magalini Medica ;)';
 
     if (updateTable) {
         await addTimesUsed(exercisesOfTheDay);
