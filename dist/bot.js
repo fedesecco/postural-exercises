@@ -70,7 +70,7 @@ function exercisesOfTheDay(exerN, updateTable) {
         const exIDs = [];
         const IDsOfTheDay = [];
         const exercisesOfTheDay = [];
-        let message = `Buongiorno! i ${exerN - 1} esercizi da fare oggi sono:\n`;
+        let message = `Buongiorno! i ${exerN} esercizi da fare oggi sono:\n`;
         for (let i = 0; i < 138; i++) {
             exIDs.push(i);
         }
