@@ -62,6 +62,7 @@ const logRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 function exercisesOfTheDay(exerN) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log('exercisesOfTheDay begin');
         let { data: exercises, error } = yield supabase.from('exercises').select();
         if (error) {
             console.log('Error on select(): ', error);
@@ -70,18 +71,23 @@ function exercisesOfTheDay(exerN) {
         const IDsOfTheDay = [];
         const exercisesOfTheDay = [];
         let message = `Buongiorno! i ${exerN} esercizi da fare oggi sono:`;
+        console.log(message);
         for (let i = 0; i < 138; i++) {
             exIDs.push(i);
         }
+        console.log('exIDs: ', exIDs);
         for (let i = 0; i < exerN; i++) {
             IDsOfTheDay.push(exIDs.splice((0, utils_1.randomNumber)(0, exIDs.length), 1)[0]);
         }
+        console.log('IDsOfTheDay: ', IDsOfTheDay);
         IDsOfTheDay.forEach((id) => {
             exercisesOfTheDay.push(exercises.filter((exer) => exer.id === id));
         });
+        console.log('exercisesOfTheDay: ', exercisesOfTheDay);
         exercisesOfTheDay.forEach((ex) => {
             message += `\n<b>${ex.name}</b>!`;
         });
+        console.log('message: ', message);
         message += '\n';
         exercisesOfTheDay.forEach((ex) => {
             if (ex.timesUsed === 0) {
@@ -91,6 +97,7 @@ function exercisesOfTheDay(exerN) {
                 message += `\n${ex.name} è un esercizio già visto passato, ${ex.timesUsed} volte!`;
             }
         });
+        console.log('message: ', message);
         message +=
             '\n ci vediamo domani per altri esercizi! Per ogni dubbio chiedete ad Ale che è il <tg-spoiler>Dio del corpo libero!</tg-spoiler> ;)';
         yield addTimesUsed(exercisesOfTheDay);
