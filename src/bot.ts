@@ -96,9 +96,9 @@ async function exercisesOfTheDay(exerN: number, updateTable: boolean) {
     message += '\n';
     exercisesOfTheDay.forEach((ex) => {
         if (ex.timesUsed === 0) {
-            message += `\n${ex.name} è un nuovo esercizio`;
+            message += `\n<tg-spoiler>${ex.name}</tg-spoiler> è un nuovo esercizio`;
         } else {
-            message += `\n${ex.name} è un esercizio già visto passato, ${ex.timesUsed} volte!`;
+            message += `\n<tg-spoiler>${ex.name}</tg-spoiler> è un esercizio già visto passato, ${ex.timesUsed} volte!`;
         }
     });
     message +=
