@@ -45,35 +45,67 @@ bot.command('help', (ctx) => {
 });
 bot.command('test', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('/test triggered');
-    let { data: exercises, error } = yield supabase.from('exercises').select();
-    if (error) {
-        console.log('Error on select(): ', error);
-    }
-    console.log('exercises: ', exercises);
-    const numberOfExercises = exercises.length;
-    console.log('exercises[0]: ', exercises[0]);
-    const numberOfTheDay = (0, utils_1.randomNumber)(0, numberOfExercises);
-    const exerciseOfTheDay = exercises[numberOfTheDay];
-    ctx.reply('exercise of the day: ' + JSON.stringify(exerciseOfTheDay), {
+    const message = yield exercisesOfTheDay(4);
+    ctx.reply(message, {
         parse_mode: 'HTML',
     });
 }));
 const logRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.method === 'POST' && req.path === '/sendExercises') {
         console.log(`sendExercises triggered`);
-        let { data: exercises, error } = yield supabase.from('exercises').select();
-        const numberOfExercises = exercises.length;
-        const numberOfTheDay = (0, utils_1.randomNumber)(0, numberOfExercises);
-        const exerciseOfTheDay = exercises[numberOfTheDay];
-        let timesUsed = exerciseOfTheDay.timesUsed;
+        const message = yield exercisesOfTheDay(4);
         activeChats.forEach((chat) => {
-            bot.api.sendMessage(chat, (0, enums_1.exercisesMessage)(exerciseOfTheDay.name, timesUsed));
+            bot.api.sendMessage(chat, message);
         });
-        timesUsed++;
-        yield supabase.from('exercises').update({ timesUsed: timesUsed }).eq('id', numberOfTheDay);
     }
     next();
 });
+function exercisesOfTheDay(exerN) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let { data: exercises, error } = yield supabase.from('exercises').select();
+        if (error) {
+            console.log('Error on select(): ', error);
+        }
+        const exIDs = [];
+        const IDsOfTheDay = [];
+        const exercisesOfTheDay = [];
+        let message = `Buongiorno! i ${exerN} esercizi da fare oggi sono:`;
+        for (let i = 0; i < 138; i++) {
+            exIDs.push(i);
+        }
+        for (let i = 0; i < exerN; i++) {
+            IDsOfTheDay.push(exIDs.splice((0, utils_1.randomNumber)(0, exIDs.length), 1)[0]);
+        }
+        IDsOfTheDay.forEach((id) => {
+            exercisesOfTheDay.push(exercises.filter((exer) => exer.id === id));
+        });
+        exercisesOfTheDay.forEach((ex) => {
+            message += `\n<b>${ex.name}</b>!`;
+        });
+        message += '\n';
+        exercisesOfTheDay.forEach((ex) => {
+            if (ex.timesUsed === 0) {
+                message += `\n${ex.name} è un nuovo esercizio`;
+            }
+            else {
+                message += `\n${ex.name} è un esercizio già visto passato, ${ex.timesUsed} volte!`;
+            }
+        });
+        message +=
+            '\n ci vediamo domani per altri esercizi! Per ogni dubbio chiedete ad Ale che è il <tg-spoiler>Dio del corpo libero!</tg-spoiler> ;)';
+        yield addTimesUsed(exercisesOfTheDay);
+        return message;
+    });
+}
+function addTimesUsed(exs) {
+    return __awaiter(this, void 0, void 0, function* () {
+        exs.forEach((ex) => __awaiter(this, void 0, void 0, function* () {
+            let used = ex.timesUsed;
+            used++;
+            yield supabase.from('exercises').update({ timesUsed: used }).eq('id', ex.id);
+        }));
+    });
+}
 if (process.env.NODE_ENV === 'production') {
     const app = (0, express_1.default)();
     app.use(express_1.default.json());
