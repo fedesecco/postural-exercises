@@ -45,7 +45,7 @@ bot.command('help', (ctx) => {
 });
 bot.command('test', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('/test triggered');
-    const message = yield exercisesOfTheDay(4);
+    const message = yield exercisesOfTheDay(4, false);
     ctx.reply(message, {
         parse_mode: 'HTML',
     });
@@ -53,14 +53,14 @@ bot.command('test', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
 const logRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.method === 'POST' && req.path === '/sendExercises') {
         console.log(`sendExercises triggered`);
-        const message = yield exercisesOfTheDay(4);
+        const message = yield exercisesOfTheDay(4, true);
         activeChats.forEach((chat) => {
             bot.api.sendMessage(chat, message);
         });
     }
     next();
 });
-function exercisesOfTheDay(exerN) {
+function exercisesOfTheDay(exerN, updateTable) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('exercisesOfTheDay begin');
         let { data: exercises, error } = yield supabase.from('exercises').select();
@@ -71,7 +71,6 @@ function exercisesOfTheDay(exerN) {
         const IDsOfTheDay = [];
         const exercisesOfTheDay = [];
         let message = `Buongiorno! i ${exerN} esercizi da fare oggi sono:`;
-        console.log(message);
         for (let i = 0; i < 138; i++) {
             exIDs.push(i);
         }
@@ -81,7 +80,11 @@ function exercisesOfTheDay(exerN) {
         }
         console.log('IDsOfTheDay: ', IDsOfTheDay);
         IDsOfTheDay.forEach((id) => {
-            exercisesOfTheDay.push(exercises.filter((exer) => exer.id === id));
+            exercises.forEach((ex) => {
+                if (id === ex.id) {
+                    exercisesOfTheDay.push(ex);
+                }
+            });
         });
         console.log('exercisesOfTheDay: ', exercisesOfTheDay);
         exercisesOfTheDay.forEach((ex) => {
@@ -97,10 +100,11 @@ function exercisesOfTheDay(exerN) {
                 message += `\n${ex.name} è un esercizio già visto passato, ${ex.timesUsed} volte!`;
             }
         });
-        console.log('message: ', message);
         message +=
             '\n ci vediamo domani per altri esercizi! Per ogni dubbio chiedete ad Ale che è il <tg-spoiler>Dio del corpo libero!</tg-spoiler> ;)';
-        yield addTimesUsed(exercisesOfTheDay);
+        if (updateTable) {
+            yield addTimesUsed(exercisesOfTheDay);
+        }
         return message;
     });
 }

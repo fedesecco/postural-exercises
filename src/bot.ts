@@ -40,7 +40,7 @@ bot.command('help', (ctx) => {
 // test
 bot.command('test', async (ctx) => {
     console.log('/test triggered');
-    const message = await exercisesOfTheDay(4);
+    const message = await exercisesOfTheDay(4, false);
     ctx.reply(message, {
         parse_mode: 'HTML',
     });
@@ -49,7 +49,7 @@ bot.command('test', async (ctx) => {
 const logRequest = async (req: Request, res: Response, next: NextFunction) => {
     if (req.method === 'POST' && req.path === '/sendExercises') {
         console.log(`sendExercises triggered`);
-        const message = await exercisesOfTheDay(4);
+        const message = await exercisesOfTheDay(4, true);
         activeChats.forEach((chat) => {
             bot.api.sendMessage(chat, message);
         });
@@ -59,7 +59,7 @@ const logRequest = async (req: Request, res: Response, next: NextFunction) => {
 
 // functions
 
-async function exercisesOfTheDay(exerN: number) {
+async function exercisesOfTheDay(exerN: number, updateTable: boolean) {
     console.log('exercisesOfTheDay begin');
     let { data: exercises, error } = await supabase.from('exercises').select();
     if (error) {
@@ -69,23 +69,30 @@ async function exercisesOfTheDay(exerN: number) {
     const IDsOfTheDay = [];
     const exercisesOfTheDay = [];
     let message = `Buongiorno! i ${exerN} esercizi da fare oggi sono:`;
-    console.log(message);
     for (let i = 0; i < 138; i++) {
         exIDs.push(i);
     }
     console.log('exIDs: ', exIDs);
+
     for (let i = 0; i < exerN; i++) {
         IDsOfTheDay.push(exIDs.splice(randomNumber(0, exIDs.length), 1)[0]);
     }
     console.log('IDsOfTheDay: ', IDsOfTheDay);
+
     IDsOfTheDay.forEach((id) => {
-        exercisesOfTheDay.push(exercises.filter((exer) => exer.id === id));
+        exercises.forEach((ex) => {
+            if (id === ex.id) {
+                exercisesOfTheDay.push(ex);
+            }
+        });
     });
     console.log('exercisesOfTheDay: ', exercisesOfTheDay);
+
     exercisesOfTheDay.forEach((ex) => {
         message += `\n<b>${ex.name}</b>!`;
     });
     console.log('message: ', message);
+
     message += '\n';
     exercisesOfTheDay.forEach((ex) => {
         if (ex.timesUsed === 0) {
@@ -94,10 +101,13 @@ async function exercisesOfTheDay(exerN: number) {
             message += `\n${ex.name} è un esercizio già visto passato, ${ex.timesUsed} volte!`;
         }
     });
-    console.log('message: ', message);
     message +=
         '\n ci vediamo domani per altri esercizi! Per ogni dubbio chiedete ad Ale che è il <tg-spoiler>Dio del corpo libero!</tg-spoiler> ;)';
-    await addTimesUsed(exercisesOfTheDay);
+
+    if (updateTable) {
+        await addTimesUsed(exercisesOfTheDay);
+    }
+
     return message;
 }
 
