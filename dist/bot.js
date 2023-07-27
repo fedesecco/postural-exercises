@@ -46,16 +46,14 @@ bot.command('help', (ctx) => {
 bot.command('test', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('/test triggered');
     const message = yield exercisesOfTheDay(4, false);
-    ctx.reply(message, {
-        parse_mode: 'HTML',
-    });
+    ctx.reply(message, { parse_mode: 'HTML' });
 }));
 const logRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.method === 'POST' && req.path === '/sendExercises') {
         console.log(`sendExercises triggered`);
         const message = yield exercisesOfTheDay(4, true);
         activeChats.forEach((chat) => {
-            bot.api.sendMessage(chat, message);
+            bot.api.sendMessage(chat, message, { parse_mode: 'HTML' });
         });
     }
     next();

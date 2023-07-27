@@ -41,9 +41,7 @@ bot.command('help', (ctx) => {
 bot.command('test', async (ctx) => {
     console.log('/test triggered');
     const message = await exercisesOfTheDay(4, false);
-    ctx.reply(message, {
-        parse_mode: 'HTML',
-    });
+    ctx.reply(message, { parse_mode: 'HTML' });
 });
 
 const logRequest = async (req: Request, res: Response, next: NextFunction) => {
@@ -51,7 +49,7 @@ const logRequest = async (req: Request, res: Response, next: NextFunction) => {
         console.log(`sendExercises triggered`);
         const message = await exercisesOfTheDay(4, true);
         activeChats.forEach((chat) => {
-            bot.api.sendMessage(chat, message);
+            bot.api.sendMessage(chat, message, { parse_mode: 'HTML' });
         });
     }
     next();
